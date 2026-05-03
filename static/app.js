@@ -109,22 +109,22 @@
   const $textIn      = $form.querySelector(".message-input");
   const $sendBtn     = $form.querySelector(".send-btn");
 
-  // Dev panel
-  const $devPanel    = document.querySelector(".dev-panel");
-  const $devToggle   = $devPanel.querySelector(".dev-toggle");
-  const $devEmoji    = $devPanel.querySelector(".dev-big-emoji");
-  const $devName     = $devPanel.querySelector(".dev-state-name");
-  const $devSettles  = $devPanel.querySelector(".dev-settles");
-  const $devTimeline = $devPanel.querySelector(".dev-timeline");
-  const $devLastMsg  = $devPanel.querySelector(".dev-last-msg");
-  const $devLastState = $devPanel.querySelector(".dev-last-state");
-  const $devLastTop  = $devPanel.querySelector(".dev-last-topic");
-  const $devLastFlash = $devPanel.querySelector(".dev-last-flash");
-  const $devSince    = $devPanel.querySelector(".dev-since");
-  const $devIdle     = $devPanel.querySelector(".dev-idle");
-  const $devVersion  = $devPanel.querySelector(".dev-version");
-  const $devJson     = $devPanel.querySelector(".dev-json");
-  const $devShortcuts = $devPanel.querySelector(".dev-shortcuts");
+  // Optional dev panel (not shipped in chat-only template).
+  const $dp = document.querySelector(".dev-panel");
+  const $devToggle    = $dp?.querySelector(".dev-toggle") ?? null;
+  const $devEmoji     = $dp?.querySelector(".dev-big-emoji") ?? null;
+  const $devName      = $dp?.querySelector(".dev-state-name") ?? null;
+  const $devSettles   = $dp?.querySelector(".dev-settles") ?? null;
+  const $devTimeline  = $dp?.querySelector(".dev-timeline") ?? null;
+  const $devLastMsg   = $dp?.querySelector(".dev-last-msg") ?? null;
+  const $devLastState = $dp?.querySelector(".dev-last-state") ?? null;
+  const $devLastTop   = $dp?.querySelector(".dev-last-topic") ?? null;
+  const $devLastFlash = $dp?.querySelector(".dev-last-flash") ?? null;
+  const $devSince     = $dp?.querySelector(".dev-since") ?? null;
+  const $devIdle      = $dp?.querySelector(".dev-idle") ?? null;
+  const $devVersion   = $dp?.querySelector(".dev-version") ?? null;
+  const $devJson      = $dp?.querySelector(".dev-json") ?? null;
+  const $devShortcuts = $dp?.querySelector(".dev-shortcuts") ?? null;
 
   const TEST_SCRIPTS = {
     "problem-once":   "the captions are not working",
@@ -324,6 +324,8 @@
   // ----------------------------------------------------------------- dev ---
 
   function updateDevPanel(payload) {
+    if (!$dp) return;
+
     const state = payload.state || "neutral";
     $devEmoji.textContent = EMOJI[state] || "😐";
     $devName.textContent  = state.replace("_", " ");
@@ -370,19 +372,23 @@
     $devJson.textContent = JSON.stringify(payload, null, 2);
   }
 
-  $devToggle.addEventListener("click", () => {
-    const collapsed = $devPanel.dataset.collapsed === "true";
-    $devPanel.dataset.collapsed = collapsed ? "false" : "true";
-    $devToggle.textContent = collapsed ? "−" : "+";
-  });
+  if ($dp && $devToggle) {
+    $devToggle.addEventListener("click", () => {
+      const collapsed = $dp.dataset.collapsed === "true";
+      $dp.dataset.collapsed = collapsed ? "false" : "true";
+      $devToggle.textContent = collapsed ? "−" : "+";
+    });
+  }
 
-  $devShortcuts.addEventListener("click", (e) => {
-    const btn = e.target.closest("button[data-test]");
-    if (!btn) return;
-    const text = TEST_SCRIPTS[btn.dataset.test];
-    if (!text) return;
-    sendMessage(text);
-  });
+  if ($devShortcuts) {
+    $devShortcuts.addEventListener("click", (e) => {
+      const btn = e.target.closest("button[data-test]");
+      if (!btn) return;
+      const text = TEST_SCRIPTS[btn.dataset.test];
+      if (!text) return;
+      sendMessage(text);
+    });
+  }
 
   async function sendMessage(text) {
     $sendBtn.disabled = true;

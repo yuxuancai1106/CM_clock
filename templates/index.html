@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body data-state="neutral">
   <div class="phone">
@@ -87,71 +87,6 @@
       <button type="submit" class="send-btn" aria-label="send">↑</button>
     </form>
   </div>
-
-  <aside class="dev-panel" data-collapsed="false">
-    <header class="dev-header">
-      <div class="dev-title">
-        <span class="dev-dot"></span>
-        <span>clock dev view</span>
-      </div>
-      <button type="button" class="dev-toggle" aria-label="collapse">−</button>
-    </header>
-
-    <div class="dev-body">
-      <section class="dev-section">
-        <div class="dev-label">current state</div>
-        <div class="dev-state-row">
-          <span class="dev-big-emoji">😐</span>
-          <div>
-            <div class="dev-state-name">neutral</div>
-            <div class="dev-state-sub">settles to: <span class="dev-settles">—</span></div>
-          </div>
-        </div>
-      </section>
-
-      <section class="dev-section">
-        <div class="dev-label">recent timeline <span class="dev-hint">(LLM decisions)</span></div>
-        <ul class="dev-timeline"><li class="dev-empty">no messages yet</li></ul>
-      </section>
-
-      <section class="dev-section">
-        <div class="dev-label">last classification</div>
-        <div class="dev-classification">
-          <div><span class="k">message</span><span class="v dev-last-msg">—</span></div>
-          <div><span class="k">state</span><span class="v dev-last-state">—</span></div>
-          <div><span class="k">topic</span><span class="v dev-last-topic">—</span></div>
-          <div><span class="k">flashed surprise</span><span class="v dev-last-flash">—</span></div>
-        </div>
-      </section>
-
-      <section class="dev-section">
-        <div class="dev-label">timing</div>
-        <div class="dev-classification">
-          <div><span class="k">since last msg</span><span class="v dev-since">—</span></div>
-          <div><span class="k">idle threshold</span><span class="v dev-idle">600s</span></div>
-          <div><span class="k">version</span><span class="v dev-version">0</span></div>
-        </div>
-      </section>
-
-      <section class="dev-section">
-        <div class="dev-label">test scripts</div>
-        <div class="dev-shortcuts">
-          <button type="button" data-test="problem-once">report problem (anxious)</button>
-          <button type="button" data-test="problem-twice">repeat → embarrassed</button>
-          <button type="button" data-test="problem-thrice">repeat → angry</button>
-          <button type="button" data-test="caps-rage">ALL CAPS yell → angry</button>
-          <button type="button" data-test="frustrated">frustrated tone → angry</button>
-          <button type="button" data-test="thanks">say thanks (joyful)</button>
-          <button type="button" data-test="hello">small talk (neutral)</button>
-        </div>
-      </section>
-
-      <section class="dev-section">
-        <div class="dev-label">raw /state response</div>
-        <pre class="dev-json">{}</pre>
-      </section>
-    </div>
-  </aside>
 
   <script>
     window.__STATES__ = {{ states | tojson }};
