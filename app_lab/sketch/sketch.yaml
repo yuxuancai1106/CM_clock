@@ -1,0 +1,5 @@
+# Optional metadata for tooling that reads per-sketch YAML.
+name: FlaskClockMatrix
+entry: sketch.ino
+extras:
+  - emotion.h

@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+  <title>The Clock</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body data-state="neutral">
+  <div class="phone">
+    <div class="phone-notch" aria-hidden="true"></div>
+
+    <header class="convo-header">
+      <button class="back" type="button" aria-label="back">‹</button>
+
+      <div class="contact">
+        <div class="avatar">
+          <svg class="clock" viewBox="-100 -100 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle class="clock-rim" cx="0" cy="0" r="92" />
+            <circle class="clock-face" cx="0" cy="0" r="86" />
+            <g class="ticks"></g>
+
+            <g class="features">
+              <g class="cheeks">
+                <circle class="cheek cheek-left"  cx="-46" cy="14" r="9" />
+                <circle class="cheek cheek-right" cx=" 46" cy="14" r="9" />
+              </g>
+              <g class="eye eye-left">
+                <ellipse class="eye-white" cx="-30" cy="-18" rx="11" ry="9" />
+                <circle  class="pupil"     cx="-30" cy="-18" r="4" />
+              </g>
+              <g class="eye eye-right">
+                <ellipse class="eye-white" cx="30" cy="-18" rx="11" ry="9" />
+                <circle  class="pupil"     cx="30" cy="-18" r="4" />
+              </g>
+              <g class="brows">
+                <path class="brow brow-left"  d="M -42 -34 Q -30 -38 -18 -34" />
+                <path class="brow brow-right" d="M  18 -34 Q  30 -38  42 -34" />
+              </g>
+              <path class="mouth" d="M -22 22 Q 0 22 22 22" />
+            </g>
+
+            <g class="hands">
+              <line class="hand hand-hour"   x1="0" y1="0" x2="0" y2="-32" />
+              <line class="hand hand-minute" x1="0" y1="0" x2="0" y2="-50" />
+              <line class="hand hand-second" x1="0" y1="0" x2="0" y2="-58" />
+              <circle class="hand-cap" cx="0" cy="0" r="3.5" />
+            </g>
+          </svg>
+        </div>
+
+        <div class="contact-info">
+          <div class="name">The Clock</div>
+          <div class="status">
+            <span class="status-emoji" aria-hidden="true">😐</span>
+            <span class="status-word">neutral</span>
+            <span class="status-sep">·</span>
+            <span class="status-mode">{{ provider }}</span>
+          </div>
+        </div>
+      </div>
+
+      <button class="info" type="button" aria-label="info">i</button>
+    </header>
+
+    <ul class="messages" aria-live="polite"></ul>
+
+    <div class="typing-row" hidden>
+      <div class="typing-bubble">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <form class="composer" autocomplete="off">
+      <input
+        class="message-input"
+        name="text"
+        maxlength="500"
+        placeholder="iMessage"
+        aria-label="message"
+        required
+        autofocus
+      />
+      <button type="submit" class="send-btn" aria-label="send">↑</button>
+    </form>
+  </div>
+
+  <aside class="dev-panel" data-collapsed="false">
+    <header class="dev-header">
+      <div class="dev-title">
+        <span class="dev-dot"></span>
+        <span>clock dev view</span>
+      </div>
+      <button type="button" class="dev-toggle" aria-label="collapse">−</button>
+    </header>
+
+    <div class="dev-body">
+      <section class="dev-section">
+        <div class="dev-label">current state</div>
+        <div class="dev-state-row">
+          <span class="dev-big-emoji">😐</span>
+          <div>
+            <div class="dev-state-name">neutral</div>
+            <div class="dev-state-sub">settles to: <span class="dev-settles">—</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="dev-section">
+        <div class="dev-label">recent timeline <span class="dev-hint">(LLM decisions)</span></div>
+        <ul class="dev-timeline"><li class="dev-empty">no messages yet</li></ul>
+      </section>
+
+      <section class="dev-section">
+        <div class="dev-label">last classification</div>
+        <div class="dev-classification">
+          <div><span class="k">message</span><span class="v dev-last-msg">—</span></div>
+          <div><span class="k">state</span><span class="v dev-last-state">—</span></div>
+          <div><span class="k">topic</span><span class="v dev-last-topic">—</span></div>
+          <div><span class="k">flashed surprise</span><span class="v dev-last-flash">—</span></div>
+        </div>
+      </section>
+
+      <section class="dev-section">
+        <div class="dev-label">timing</div>
+        <div class="dev-classification">
+          <div><span class="k">since last msg</span><span class="v dev-since">—</span></div>
+          <div><span class="k">idle threshold</span><span class="v dev-idle">600s</span></div>
+          <div><span class="k">version</span><span class="v dev-version">0</span></div>
+        </div>
+      </section>
+
+      <section class="dev-section">
+        <div class="dev-label">test scripts</div>
+        <div class="dev-shortcuts">
+          <button type="button" data-test="problem-once">report problem (anxious)</button>
+          <button type="button" data-test="problem-twice">repeat → embarrassed</button>
+          <button type="button" data-test="problem-thrice">repeat → angry</button>
+          <button type="button" data-test="caps-rage">ALL CAPS yell → angry</button>
+          <button type="button" data-test="frustrated">frustrated tone → angry</button>
+          <button type="button" data-test="thanks">say thanks (joyful)</button>
+          <button type="button" data-test="hello">small talk (neutral)</button>
+        </div>
+      </section>
+
+      <section class="dev-section">
+        <div class="dev-label">raw /state response</div>
+        <pre class="dev-json">{}</pre>
+      </section>
+    </div>
+  </aside>
+
+  <script>
+    window.__STATES__ = {{ states | tojson }};
+  </script>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

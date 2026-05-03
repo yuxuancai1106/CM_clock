@@ -1,0 +1,10 @@
+name: FlaskClockAppLabCompanion
+description: |-
+  Companion: Python polls Flask GET /state; sketch renders emotion on LED matrix.
+
+  Flask lives separately (CriticalMaking/app.py).
+  Strings must match exactly: neutral, at_ease, joyful, surprised, anxious, embarrassed, angry.
+
+structure:
+  python_entry: python/main.py
+  sketch_folder: sketch
