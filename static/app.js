@@ -415,19 +415,24 @@
         return;
       }
       const data = await resp.json();
+      const clockId = data.message.id;
+
+      /* The /state poll runs every 2s with the message list. If we only add this
+       * id inside the delayed bubble paint, polling can beat us and append the
+       * same reaction — then the timeout appends again (double bubble). Reserve
+       * the id immediately; sync version so polls don't replay the face early. */
+      renderedClockIds.add(clockId);
+      lastVersion = data.state.version;
 
       // Hold the typing indicator for at least 600ms — feels more alive.
       setTimeout(() => {
         showTyping(false);
-        // Mark the clock bubble for this id as rendered before we paint it.
-        renderedClockIds.add(data.message.id);
         appendClockBubble(
           data.message.reaction,
           data.message.settles_to,
           data.message.topic,
         );
         applyState(data.state.state);
-        lastVersion = data.state.version;
         $messages.scrollTop = $messages.scrollHeight;
       }, 600);
     } catch (_) {
