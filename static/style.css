@@ -271,6 +271,15 @@ body::before {
 .bubble-row.from-user  { justify-content: flex-end; }
 .bubble-row.from-clock { justify-content: flex-start; }
 .bubble-row.tight       { margin-top: 2px; }    /* same-side stacked bubbles */
+.bubble-row.send-error-note {
+  justify-content: center;
+  margin: 0.35rem 0 0.5rem;
+  padding: 0 0.75rem;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: #e5989b;
+  text-align: center;
+}
 
 @keyframes bubble-in {
   from { opacity: 0; transform: translateY(6px); }

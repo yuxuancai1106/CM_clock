@@ -225,6 +225,15 @@
     lastBubbleAuthor = "user";
   }
 
+  function appendSendErrorNote(text) {
+    const row = document.createElement("div");
+    row.className = "bubble-row send-error-note";
+    row.setAttribute("role", "alert");
+    row.textContent = text;
+    $messages.appendChild(row);
+    lastBubbleAuthor = null;
+  }
+
   function appendClockBubble(text, settledTo, topic) {
     const row = document.createElement("div");
     row.className = "bubble-row from-clock" + (lastBubbleAuthor === "clock" ? " tight" : "");
@@ -396,6 +405,13 @@
       });
       if (!resp.ok) {
         showTyping(false);
+        let detail = `Couldn\u2019t send (${resp.status}).`;
+        try {
+          const errBody = await resp.json();
+          if (errBody && errBody.error) detail = `${detail} ${errBody.error}`;
+        } catch (_) { /* ignore */ }
+        appendSendErrorNote(detail + " Tap send to try again.");
+        $messages.scrollTop = $messages.scrollHeight;
         return;
       }
       const data = await resp.json();
@@ -414,6 +430,13 @@
         lastVersion = data.state.version;
         $messages.scrollTop = $messages.scrollHeight;
       }, 600);
+    } catch (_) {
+      showTyping(false);
+      appendSendErrorNote(
+        "Network error\u2014no reply from server. Check connection and reload the page. " +
+        "If nothing loads, wait ~1 min (Render wakes from sleep).",
+      );
+      $messages.scrollTop = $messages.scrollHeight;
     } finally {
       $sendBtn.disabled = false;
       $textIn.focus();
