@@ -6,7 +6,8 @@ Responsibilities (everything else now lives in emotion.py):
     "this is the same problem the user mentioned earlier".
   - Apply the SURPRISE FLASH on the first message after silence.
   - Apply the IDLE -> at_ease transition after long quiet.
-  - Pick a short in-character REACTION line for whatever state the LLM chose.
+  - Pick a short reply aimed at the person texting: validation, apologies,
+    and calm reassurance when they are upset—not the clock performing anger back.
   - Hand the resolved state out via /state to the page and to bridge.py.
 
 The states `surprised` and `at_ease` are owned here (time-driven). The other
@@ -47,32 +48,40 @@ IDLE_AT_EASE_SECONDS = 10 * 60
 HISTORY_MAXLEN = 30                # messages kept in memory for LLM + dev panel
 HISTORY_FOR_LLM = 8                # how many we feed into the prompt
 
-# ---- in-character reaction pools (the clock's "voice") --------------------
+# Each line speaks *to the user*. Classifier labels like "angry" mean *they*
+# sound furious; our text stays gentle and apologetic, never snapping at them.
 _REACTIONS: dict[str, tuple[str, ...]] = {
     "neutral": (
-        "tick. tock.", "i am here.", "the room is steady.",
+        "i'm here--go ahead.",
+        "i'm listening.", "steady. tell me more.",
+        "take your time.", "okay. what's up?",
     ),
     "at_ease": (
-        "the pendulum slows…", "i drift, gently.", "everything is quiet now.",
-        "i rest between the seconds.",
+        "it's quiet again--i'm glad you're still here.", "no rush.",
+        "resting together for a beat.", "i'll be right here when you're ready.",
     ),
     "joyful": (
-        "oh — thank you.", "my springs are dancing!",
-        "i am wound with light.", "you brighten my dial.",
+        "thank you--that means a lot.", "you're kind to say so.",
+        "that really helps--thank you.", "i appreciate you.", "that's so generous of you.",
     ),
     "surprised": (
-        "oh!", "wait —", "my hands skipped a beat.", "i did not see that coming.",
+        "oh--okay.", "that's a lot--i'm listening.",
+        "okay--i caught that.", "i'm with you. keep going.", "i'm tracking. go on.", "hang on--i'm with you.",
     ),
     "anxious": (
-        "oh no…", "something is wrong.", "my gears are tightening.", "i… i hear you.",
+        "i'm sorry that's happening.", "that's really frustrating--i'm sorry.",
+        "i hear you. that shouldn't feel broken.", "you're right to say something.",
+        "ugh--i'm sorry it's like that.", "thank you for telling me.", "okay. i hear the stress in that.",
     ),
     "embarrassed": (
-        "i'm so sorry — again.", "still? oh dear.",
-        "i thought i had fixed myself.", "my face is warm.",
+        "i'm really sorry you're still hitting this.", "you shouldn't have to repeat yourself--sorry.",
+        "that's on us--thank you for your patience.", "i owe you another sorry--still not right.",
+        "you deserve better than this loop.", "that's embarrassing for me too--sorry.",
     ),
     "angry": (
-        "ENOUGH.", "tick. TICK. TICK.", "this is humiliating.",
-        "do not say it like that.",
+        "you sound really stretched thin--i'm sorry.", "i hear you're at your limit.", "okay. i'm not blaming you.", "that's fair frustration--i'm sorry.", "slow down whenever you want--i'm listening.",
+        "i'm not taking it personally--i know you're upset.", "breathe if you need. i'm still here.",
+        "i'm sorry this kept pushing you.", "you're not wrong to be upset.", "tell me calmly when you're ready--i'll wait.",
     ),
 }
 
