@@ -160,7 +160,7 @@ For each new user message, decide the clock's emotional reaction. Output exactly
   - "joyful"      : the speaker expresses gratitude, thanks, praise, or delight.
   - "anxious"     : the speaker reports a NEW problem or concern for the FIRST time, calmly.
   - "embarrassed" : the same concern from earlier in the conversation is being raised AGAIN (use the history).
-  - "angry"       : the speaker is yelling (ALL CAPS, multiple !!!, harsh language, swearing, "fix it", "ridiculous", etc.) OR the same problem is reported a 3rd+ time. (This describes *their* tone; the clock's scripted reply should stay kind and apologetic.)
+  - "angry"       : the speaker is yelling (ALL CAPS, multiple !!!, harsh language, swearing, "fix it", "ridiculous", etc.) OR the same problem is reported a 3rd+ time.
 
 TONE OVERRIDES TOPIC. If the speaker is clearly yelling/furious, the state is "angry" even if the underlying issue is new. CAPITALIZATION and punctuation are strong signals.
 

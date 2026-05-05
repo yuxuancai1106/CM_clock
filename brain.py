@@ -52,38 +52,54 @@ HISTORY_FOR_LLM = 8                # how many we feed into the prompt
 # sound furious; our text stays gentle and apologetic, never snapping at them.
 _REACTIONS: dict[str, tuple[str, ...]] = {
     "neutral": (
-        "i'm here--go ahead.",
-        "i'm listening.", "steady. tell me more.",
-        "take your time.", "okay. what's up?",
+        "i'm listening.", "tell me more.", "mm-hm.",
     ),
     "at_ease": (
-        "it's quiet again--i'm glad you're still here.", "no rush.",
-        "resting together for a beat.", "i'll be right here when you're ready.",
+        "you can lean on me for this",
+        "take your time — we’ve got things covered.",
+        "there’s room for you here.",
+        "everything’s flowing now.",
+        "there we go.",
     ),
     "joyful": (
-        "thank you--that means a lot.", "you're kind to say so.",
-        "that really helps--thank you.", "i appreciate you.", "that's so generous of you.",
+        "<3",
+        "I got your back!",
+        "yay!",
+        "This gives me hope that we’re moving in the right direction",
+        "That’s wonderful news!",
     ),
     "surprised": (
-        "oh--okay.", "that's a lot--i'm listening.",
-        "okay--i caught that.", "i'm with you. keep going.", "i'm tracking. go on.", "hang on--i'm with you.",
+        "Huh!?",
+        "That’s really unexpected — thank you for catching it.",
+        "I’m kind of shocked this wasn’t tested properly",
+        "That’s a major oversight!",
+        "Hold on, nobody flagged this earlier?",
     ),
     "anxious": (
-        "i'm sorry that's happening.", "that's really frustrating--i'm sorry.",
-        "i hear you. that shouldn't feel broken.", "you're right to say something.",
-        "ugh--i'm sorry it's like that.", "thank you for telling me.", "okay. i hear the stress in that.",
+        "Oh no...",
+        "I don’t want you stuck navigating this by yourself.",
+        "you're right to say something.",
+        "this adds stress you didn’t sign up for.",
+        "I’m honestly panicking a little that this slipped through.",
+        "gosh… I’m sticking with you until this gets resolved",
     ),
     "embarrassed": (
-        "i'm really sorry you're still hitting this.", "you shouldn't have to repeat yourself--sorry.",
-        "that's on us--thank you for your patience.", "i owe you another sorry--still not right.",
-        "you deserve better than this loop.", "that's embarrassing for me too--sorry.",
+        "Ugh…",
+        "I wish this had already been addressed.",
+        "I’m embarrassed that you had to spend energy dealing with this.",
+        "we need to do better than this...",
+        "we clearly missed something important.",
     ),
     "angry": (
-        "you sound really stretched thin--i'm sorry.", "i hear you're at your limit.", "okay. i'm not blaming you.", "that's fair frustration--i'm sorry.", "slow down whenever you want--i'm listening.",
-        "i'm not taking it personally--i know you're upset.", "breathe if you need. i'm still here.",
-        "i'm sorry this kept pushing you.", "you're not wrong to be upset.", "tell me calmly when you're ready--i'll wait.",
+        "Seriously!?",
+        "You shouldn’t have to fight for basic access.",
+        "You focus on getting through the event — I’ll handle the fight!",
+        "You belong here without conditions.",
+        "I’m angry this was put on your shoulders.",
+        "This is exactly the kind of situation we wanted to avoid.",
     ),
 }
+
 
 
 @dataclass
