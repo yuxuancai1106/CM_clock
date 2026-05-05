@@ -162,12 +162,10 @@ body::before {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: inherit;
 }
 .status-emoji { font-size: 14px; line-height: 1; }
 .status-word { color: var(--accent); transition: color var(--transition); }
-.status-sep  { opacity: .5; }
-.status-mode { opacity: .6; text-transform: uppercase; letter-spacing: .05em; }
 
 /* ----------------------------------------------------------------- clock --- */
 

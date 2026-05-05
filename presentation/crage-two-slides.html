@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Crage — design &amp; LLM</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Inter, sans-serif;
+      background: #0a0a0c;
+      color: #ecedf0;
+    }
+    .deck {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      padding: 2rem clamp(1rem, 4vw, 3rem);
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .slide {
+      flex: 1;
+      min-height: min(88vh, 640px);
+      border: 1px solid #2a2c33;
+      border-radius: 16px;
+      padding: clamp(1.5rem, 4vw, 2.75rem);
+      background: linear-gradient(165deg, #14161b 0%, #0f1115 100%);
+      box-shadow: 0 24px 80px rgba(0,0,0,.45);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+    .slide-num {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #8d8f97;
+      margin-bottom: 0.75rem;
+    }
+    h1 {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 700;
+      margin: 0 0 1rem;
+      line-height: 1.2;
+    }
+    h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #c8c2b0;
+      margin: 1.25rem 0 0.5rem;
+    }
+    ul {
+      margin: 0;
+      padding-left: 1.15rem;
+      line-height: 1.55;
+      font-size: clamp(0.95rem, 2.2vw, 1.05rem);
+      color: #c5c8d0;
+    }
+    li { margin-bottom: 0.45rem; }
+    .highlight {
+      color: #ffd66b;
+      font-weight: 600;
+    }
+    .flow {
+      margin-top: 1rem;
+      padding: 1rem 1.15rem;
+      background: #0c0d11;
+      border-radius: 10px;
+      border: 1px solid #1f2127;
+      font-family: ui-monospace, "Cascadia Code", monospace;
+      font-size: 0.82rem;
+      line-height: 1.5;
+      color: #a8abb3;
+      white-space: pre-wrap;
+    }
+    @media print {
+      body { background: #fff; color: #111; }
+      .slide { break-inside: avoid; page-break-inside: avoid; min-height: auto; box-shadow: none; border-color: #ccc; }
+    }
+  </style>
+</head>
+<body>
+  <div class="deck">
+
+    <section class="slide" aria-label="Slide 1">
+      <div class="slide-num">Slide 1 of 2</div>
+      <h1>Website design — <span class="highlight">Crage</span></h1>
+      <h2>What you see</h2>
+      <ul>
+        <li><span class="highlight">Phone-style shell</span> — single-column layout (full width on small screens) with a chat header, scrollable thread, and composer.</li>
+        <li><span class="highlight">Animated face</span> — SVG clock in the header reflects the current <em>state</em> (neutral, surprised, anxious, etc.) as people text.</li>
+        <li><span class="highlight">iMessage-like chat</span> — user messages on the right; Crage’s replies on the left, with a short typing indicator before each reply.</li>
+        <li><span class="highlight">Live sync</span> — the page calls <code style="color:#8ec5e8">POST /message</code> to send text and <code style="color:#8ec5e8">GET /state</code> every couple of seconds so time-based changes (surprise fading, idle) update without reloading.</li>
+      </ul>
+      <h2>Under the hood (stack)</h2>
+      <ul>
+        <li><span class="highlight">Flask</span> serves HTML, CSS, JS, and the JSON API.</li>
+        <li>One shared session on the server: everyone texting the deployed link shares the same conversation “room” (in-memory <code style="color:#8ec5e8">ClockBrain</code>).</li>
+      </ul>
+    </section>
+
+    <section class="slide" aria-label="Slide 2">
+      <div class="slide-num">Slide 2 of 2</div>
+      <h1>What the LLM does (and doesn’t)</h1>
+      <h2>Single job for the LLM — <span class="highlight">classification only</span></h2>
+      <ul>
+        <li>For each incoming message (plus recent history), the model in <strong>emotion.py</strong> chooses one label: roughly how the attendee sounds — <em>neutral</em>, <em>joyful</em>, first-time problem (<em>anxious</em>), repeat complaint (<em>embarrassed</em>), or strong frustration / yell / third strike (<em>angry</em>).</li>
+        <li>It may also emit a short <span class="highlight">topic</span> (e.g. captions, audio) so the brain can detect “same problem again.”</li>
+        <li>If no API key is set, a <span class="highlight">heuristic</span> (regex + rules) does the same job instead — same contract, no LLM.</li>
+      </ul>
+      <h2>Not an LLM task — <span class="highlight">the actual reply text</span></h2>
+      <ul>
+        <li>Chat lines like “I’m sorry that’s happening…” come from fixed pools in <strong>brain.py</strong> (<code style="color:#8ec5e8">_REACTIONS</code>), picked at random per state. That keeps voice consistent and avoids an extra model call per message.</li>
+        <li><strong>brain.py</strong> also owns <em>surprised</em> flash timing and <em>at_ease</em> after idle — not the LLM.</li>
+      </ul>
+      <div class="flow">User message → classifier (LLM or heuristic) → state + topic
+        → ClockBrain picks reaction text + timestamps / surprise / idle → JSON to web + hardware</div>
+    </section>
+
+  </div>
+</body>
+</html>

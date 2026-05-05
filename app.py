@@ -25,7 +25,6 @@ except ImportError:
     pass
 
 from brain import STATES, ClockBrain
-from emotion import llm_provider
 
 app = Flask(__name__)
 brain = ClockBrain()
@@ -36,7 +35,6 @@ def index():
     return render_template(
         "index.html",
         states=list(STATES),
-        provider=llm_provider(),
     )
 
 
